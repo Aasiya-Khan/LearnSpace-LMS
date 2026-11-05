@@ -1,0 +1,10 @@
+target/
+out/
+*.class
+.idea/
+*.iml
+.DS_Store
+db.properties
+**/db.properties
+uploads/
+.gradle/
