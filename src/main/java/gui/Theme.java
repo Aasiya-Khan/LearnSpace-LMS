@@ -26,9 +26,9 @@ public final class Theme {
     private Theme() {}
 
     public static void install() {
-        Font karla = load("/fonts/Karla-Regular.ttf");
-        Font karlaBold = load("/fonts/Karla-Bold.ttf");
-        Font archivo = load("/fonts/Archivo-Bold.ttf");
+        Font karla = load("/fonts/Karla-VariableFont_wght.ttf");
+        Font karlaBold = null; // variable font: bold is derived below
+        Font archivo = load("/fonts/ArchivoBlack-Regular.ttf");
         if (karla != null) body = karla.deriveFont(Font.PLAIN, 14f);
         bodyBold = karlaBold != null ? karlaBold.deriveFont(Font.PLAIN, 14f) : body.deriveFont(Font.BOLD);
         if (archivo != null) heading = archivo.deriveFont(Font.PLAIN, 20f);
