@@ -11,10 +11,11 @@ public class DBConnection {
     private static final Properties props = new Properties();
 
     static {
-        try (FileInputStream in = new FileInputStream("db.properties")) {
+        try (FileInputStream in = new FileInputStream(AppPaths.configFile().toFile())) {
             props.load(in);
         } catch (Exception e) {
-            throw new RuntimeException("Cannot load db.properties", e);
+            throw new RuntimeException("Cannot load " + AppPaths.configFile()
+                    + " (copy db.properties.example there, or start with -Dlearnspace.home=<folder>)", e);
         }
     }
 

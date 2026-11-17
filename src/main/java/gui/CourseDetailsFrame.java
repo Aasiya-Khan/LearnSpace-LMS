@@ -166,7 +166,7 @@ public class CourseDetailsFrame extends JDialog {
 
     private void openFile(String path) {
         try {
-            File f = new File(path);
+            File f = database.AppPaths.resolve(path);
             if (!f.isFile())
                 throw new IllegalArgumentException("File not found: " + path);
             if (!Desktop.isDesktopSupported())

@@ -41,7 +41,7 @@ class LessonServiceTest extends TestBase {
 
     private Lesson add(String title, int order) throws Exception {
         Lesson l = lessons.addLesson(instructor, course.getCourseId(), title, order, null, pdf);
-        cleanup.add(new File(l.getPdfPath()));
+        cleanup.add(database.AppPaths.resolve(l.getPdfPath()));
         return l;
     }
 
@@ -61,7 +61,7 @@ class LessonServiceTest extends TestBase {
     void pdfCopied() throws Exception {
         Lesson l = add("Intro", 1);
         assertTrue(l.getPdfPath().startsWith("uploads/documents/"));
-        assertTrue(new File(l.getPdfPath()).isFile());
+        assertTrue(database.AppPaths.resolve(l.getPdfPath()).isFile());
         assertNull(l.getVideoPath());
     }
 
