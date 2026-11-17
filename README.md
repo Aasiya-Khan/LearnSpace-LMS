@@ -42,10 +42,26 @@ GUI (Swing)  →  Service (rules, permissions, validation)  →  DAO (JDBC, Prep
 
 ## Setup
 
-1. Install MySQL 8 and create the `LearnSpace` database and tables.
-2. Copy `db.properties.example` to `db.properties` and enter your own MySQL user and password. (`db.properties` is git-ignored.)
-3. Open in IntelliJ (or run `mvn clean package`) and run `Main`.
-4. Tests run against a separate `LearnSpace_test` database: `mvn test`.
+**Needs:** Java 17 or newer, Maven, MySQL 8, and a computer with a screen (it's a desktop app).
+
+1. **Create the databases** (main + a separate one for tests):
+   ```
+   mysql -u root -p -e "CREATE DATABASE LearnSpace; CREATE DATABASE LearnSpace_test;"
+   mysql -u root -p LearnSpace      < schema.sql
+   mysql -u root -p LearnSpace_test < schema.sql
+   ```
+2. **Add your database login:** copy `db.properties.example` to `db.properties` (same folder as `pom.xml`) and fill in your MySQL user and password. `db.properties` is git-ignored.
+3. **Run the app:**
+   ```
+   mvn compile exec:java
+   ```
+   or open the folder in IntelliJ and run `Main`.
+4. **Run the tests** (they use `LearnSpace_test` and wipe it before each test):
+   ```
+   mvn test
+   ```
+
+Uploaded lesson files are copied to an `uploads/` folder next to `pom.xml` (git-ignored).
 
 ## Progress
 
