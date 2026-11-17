@@ -3,7 +3,7 @@
 **One login, two ways to learn.**
 LearnSpace is a Java Swing desktop learning-management system (LMS) backed by MySQL. Institutions run private classroom courses, and their students also learn from an open course marketplace, all in one app.
 
-Built solo using agile sprints, MoSCoW prioritisation and a functional-requirements (FRD) tracker.
+Built using agile sprints, MoSCoW prioritisation and a functional-requirements (FRD) tracker.
 
 ---
 
@@ -116,7 +116,7 @@ Uploaded lesson files are copied to an `uploads/` folder next to `pom.xml` (git-
 
 Sprint milestones are tagged: `sprint-1`, `sprint-2`, `sprint-3`, `v1.0`.
 
-> **About the commit history:** the code was uploaded to GitHub on 15 Nov 2026, after the project was finished. It was committed step by step in the order it was built, and each commit's date was set to the day that step was built (5–10 Nov), taken from the project's build log. Times of day are approximate.
+> **About the commit history:** the code was uploaded to GitHub on 15 Nov 2026, after the project was finished. It was committed step by step in the order it was built, and each commit's date was set to the day that step was built, taken from the project's build log. Times of day are approximate.
 
 ## Known limitations
 
