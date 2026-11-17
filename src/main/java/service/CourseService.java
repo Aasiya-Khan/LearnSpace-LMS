@@ -17,6 +17,11 @@ public class CourseService {
 
     public Course create(User instructor, String title, String description,
                          boolean institutionOnly) throws SQLException {
+        return create(instructor, title, description, institutionOnly, null);
+    }
+
+    public Course create(User instructor, String title, String description,
+                         boolean institutionOnly, Integer categoryId) throws SQLException {
         if (!(instructor instanceof Instructor))
             throw new IllegalArgumentException("Only instructors can create courses");
         if (title == null || title.isBlank())
@@ -34,8 +39,12 @@ public class CourseService {
         }
 
         int id = dao.insert(instructor.getUserId(), institutionId, title.trim(),
-                description == null ? "" : description.trim(), visibility);
+                description == null ? "" : description.trim(), visibility, categoryId);
         return dao.findById(id);
+    }
+
+    public java.util.Map<Integer, String> categories() throws SQLException {
+        return dao.findCategories();
     }
 
     public List<Course> myCourses(User instructor) throws SQLException {

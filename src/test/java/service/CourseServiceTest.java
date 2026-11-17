@@ -109,4 +109,16 @@ class CourseServiceTest extends TestBase {
         institutions.join(student, other.getJoinCode());
         assertTrue(courses.institutionCourses(student).isEmpty());
     }
+
+    @Test
+    @DisplayName("Course can be saved with a category, or without one")
+    void courseCategory() throws Exception {
+        java.util.Map<Integer, String> cats = courses.categories();
+        assertFalse(cats.isEmpty(), "schema.sql adds starter categories");
+        int firstId = cats.keySet().iterator().next();
+        Course withCat = courses.create(instructor, "UI Design 101", "", false, firstId);
+        assertEquals(cats.get(firstId), withCat.getCategoryName());
+        Course without = courses.create(instructor, "Python for Everyone", "", false);
+        assertNull(without.getCategoryName());
+    }
 }

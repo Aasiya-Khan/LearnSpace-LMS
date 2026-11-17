@@ -24,6 +24,8 @@ public class InstructorDashboard extends BaseDashboard {
     private final JRadioButton publicRadio = new JRadioButton("Public – anyone can enrol", true);
     private final JRadioButton institutionRadio = new JRadioButton("My institution only");
     private final JLabel hint = new JLabel(" ");
+    private final JComboBox<String> categoryBox = new JComboBox<>();
+    private final java.util.List<Integer> categoryIds = new java.util.ArrayList<>();
 
     public InstructorDashboard(User user) {
         super(user, "Instructor");
@@ -72,6 +74,8 @@ public class InstructorDashboard extends BaseDashboard {
         JScrollPane descScroll = new JScrollPane(descArea);
         descScroll.setMaximumSize(new Dimension(500, 100));
         titleField.setMaximumSize(new Dimension(500, 32));
+        categoryBox.setMaximumSize(new Dimension(500, 32));
+        loadCategories();
         Theme.quiet(hint);
 
         JButton create = Theme.primary(new JButton("Create course"));
@@ -81,6 +85,7 @@ public class InstructorDashboard extends BaseDashboard {
         form.setLayout(new BoxLayout(form, BoxLayout.Y_AXIS));
         form.setBorder(BorderFactory.createEmptyBorder(16, 16, 16, 16));
         JComponent[] parts = {new JLabel("Title"), titleField, new JLabel("Description"), descScroll,
+                new JLabel("Category"), categoryBox,
                 new JLabel("Visibility"), publicRadio, institutionRadio, hint, create};
         for (JComponent c : parts) {
             c.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -95,14 +100,31 @@ public class InstructorDashboard extends BaseDashboard {
 
     private void doCreate() {
         try {
+            int pick = categoryBox.getSelectedIndex();
+            Integer categoryId = pick <= 0 ? null : categoryIds.get(pick - 1);
             courseService.create(user, titleField.getText(), descArea.getText(),
-                    institutionRadio.isSelected());
+                    institutionRadio.isSelected(), categoryId);
             JOptionPane.showMessageDialog(this, "Course created");
             titleField.setText("");
             descArea.setText("");
             publicRadio.setSelected(true);
+            categoryBox.setSelectedIndex(0);
             tabs.setSelectedIndex(0);
             refresh();
+        } catch (Exception ex) {
+            showError(ex);
+        }
+    }
+
+    private void loadCategories() {
+        categoryBox.removeAllItems();
+        categoryIds.clear();
+        categoryBox.addItem("No category");
+        try {
+            for (java.util.Map.Entry<Integer, String> e : courseService.categories().entrySet()) {
+                categoryIds.add(e.getKey());
+                categoryBox.addItem(e.getValue());
+            }
         } catch (Exception ex) {
             showError(ex);
         }

@@ -17,8 +17,13 @@ public class CourseDAO {
 
     public int insert(int instructorId, Integer institutionId, String title,
                       String description, String visibility) throws SQLException {
-        String sql = "INSERT INTO Courses (instructor_id, institution_id, title, description, visibility) "
-                + "VALUES (?, ?, ?, ?, ?)";
+        return insert(instructorId, institutionId, title, description, visibility, null);
+    }
+
+    public int insert(int instructorId, Integer institutionId, String title,
+                      String description, String visibility, Integer categoryId) throws SQLException {
+        String sql = "INSERT INTO Courses (instructor_id, institution_id, title, description, visibility, category_id) "
+                + "VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection c = DBConnection.getConnection();
              PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setInt(1, instructorId);
@@ -27,12 +32,26 @@ public class CourseDAO {
             ps.setString(3, title);
             ps.setString(4, description);
             ps.setString(5, visibility);
+            if (categoryId == null) ps.setNull(6, Types.INTEGER);
+            else ps.setInt(6, categoryId);
             ps.executeUpdate();
             try (ResultSet keys = ps.getGeneratedKeys()) {
                 keys.next();
                 return keys.getInt(1);
             }
         }
+    }
+
+    /** All categories, id → name, in alphabetical order. */
+    public java.util.Map<Integer, String> findCategories() throws SQLException {
+        java.util.Map<Integer, String> map = new java.util.LinkedHashMap<>();
+        try (Connection c = DBConnection.getConnection();
+             PreparedStatement ps = c.prepareStatement(
+                     "SELECT category_id, category_name FROM Categories ORDER BY category_name");
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) map.put(rs.getInt(1), rs.getString(2));
+        }
+        return map;
     }
 
     public Course findById(int courseId) throws SQLException {
